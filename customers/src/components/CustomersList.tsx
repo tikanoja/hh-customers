@@ -1,59 +1,57 @@
 import { useEffect, useState } from 'react';
 import { apiClient } from '../api/apiClient';
 import { Customer } from '../api/types';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { ColDef } from 'ag-grid-community';
 
 export const CustomersList = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [search, setSearch] = useState('');
-  const [sortAsc, setSortAsc] = useState(true);
-
-  useEffect(() => {
+  
+  const fetchCustomers = () => {
     apiClient.get<{ _embedded: { customers: Customer[] } }>('customers')
-      .then(res => setCustomers(res._embedded.customers));
+      .then(res => setCustomers(res._embedded.customers))
+      .catch(err => console.error('Error fetching customers:', err));
+  };
+  
+  useEffect(() => {
+    fetchCustomers();
   }, []);
 
-  const filtered = customers.filter(c =>
-    (c.firstname + ' ' + c.lastname).toLowerCase().includes(search.toLowerCase())
-  );
-
-  const sorted = [...filtered].sort((a, b) => {
-    const nameA = a.firstname.toLowerCase();
-    const nameB = b.firstname.toLowerCase();
-    return sortAsc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-  });
+  const columnDefs: ColDef[] = [
+    { field: 'firstname', headerName: 'First Name', sortable: true, filter: true },
+    { field: 'lastname', headerName: 'Last Name', sortable: true, filter: true },
+    { field: 'email', headerName: 'Email', sortable: true, filter: true },
+    { field: 'phone', headerName: 'Phone', sortable: true, filter: true },
+    { field: 'streetaddress', headerName: 'Address', sortable: true, filter: true },
+    { field: 'postcode', headerName: 'Postcode', sortable: true, filter: true },
+    { field: 'city', headerName: 'City', sortable: true, filter: true }
+  ];
 
   return (
-    <div>
+    <div style={{ height: '100%', width: '100%', padding: '20px' }}>
       <h1>Customers</h1>
-      <input 
-        type="text" 
-        placeholder="Search by name..." 
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-      <button onClick={() => setSortAsc(!sortAsc)}>
-        Sort {sortAsc ? '↓' : '↑'}
-      </button>
-      <table border={1} cellPadding={5} style={{ marginTop: '1rem' }}>
-        <thead>
-          <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((c, idx) => (
-            <tr key={idx}>
-              <td>{c.firstname}</td>
-              <td>{c.lastname}</td>
-              <td>{c.email}</td>
-              <td>{c.phone}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      
+      <div 
+        className="ag-theme-alpine" 
+        style={{ height: 'calc(100vh - 130px)', width: '100%' }}
+      >
+        <AgGridReact
+          rowData={customers}
+          columnDefs={columnDefs}
+          pagination={true}
+          paginationPageSize={10}
+          animateRows={true}
+          defaultColDef={{
+            flex: 1,
+            minWidth: 100,
+            resizable: true,
+            sortable: true,
+            filter: true
+          }}
+        />
+      </div>
     </div>
   );
 };
