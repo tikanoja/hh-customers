@@ -73,25 +73,29 @@ export const CustomersList = () => {
     { field: 'postcode', headerName: 'Postcode', sortable: true, filter: true },
     { field: 'city', headerName: 'City', sortable: true, filter: true },
     { 
-      headerName: 'Actions',
-      width: 120,
+      headerName: 'Edit',
+      width: 90,
       cellRenderer: (params: ICellRendererParams) => (
-        <div style={{ display: 'flex', gap: '5px' }}>
-          <EditCustomer 
-            customer={params.data} 
-            updateCustomer={updateCustomer} 
-            fetchCustomers={fetchCustomers} 
-          />
-          <AddTrainingForCustomer 
+        <EditCustomer 
           customer={params.data} 
-          onTrainingAdded={() => showSnackbar('Training added successfully!')} 
-          />
-        </div>
+          updateCustomer={updateCustomer} 
+          fetchCustomers={fetchCustomers} 
+        />
       )
     },
     { 
-      headerName: '',
-      width: 100,
+      headerName: 'Add Training',
+      width: 120,
+      cellRenderer: (params: ICellRendererParams) => (
+        <AddTrainingForCustomer 
+          customer={params.data} 
+          onTrainingAdded={() => showSnackbar('Training added successfully!')} 
+        />
+      )
+    },
+    { 
+      headerName: 'Delete',
+      width: 90,
       cellRenderer: (params: ICellRendererParams) => (
         <Button 
           size="small" 
@@ -119,6 +123,7 @@ export const CustomersList = () => {
           columnDefs={columnDefs}
           pagination={true}
           paginationPageSize={10}
+          paginationPageSizeSelector={[10, 20, 50, 100]}
           animateRows={true}
           defaultColDef={{
             flex: 1,
