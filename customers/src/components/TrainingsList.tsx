@@ -23,7 +23,6 @@ export const TrainingsList = () => {
     fetchTrainings();
   }, []);
 
-  // Delete training with confirmation
   const handleDelete = (params: ICellRendererParams) => {
     if (window.confirm('Are you sure you want to delete this training?')) {
       apiClient.delete(`trainings/${params.data.id}`)
@@ -35,7 +34,6 @@ export const TrainingsList = () => {
     }
   };
 
-  // Display snackbar notification
   const showSnackbar = (message: string) => {
     setSnackbarMessage(message);
     setSnackbarOpen(true);

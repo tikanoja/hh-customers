@@ -4,7 +4,6 @@ const BASE_URL = API_CONFIG.BASE_URL;
 
 export const apiClient = {
   get: async <T>(endpoint: string): Promise<T> => {
-    // Remove any leading slash from the endpoint to prevent double slashes
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
     const response = await fetch(`${BASE_URL}/${cleanEndpoint}`);
     if (!response.ok) {
@@ -14,7 +13,7 @@ export const apiClient = {
   },
   
   post: async <T>(endpoint: string, data: any): Promise<T> => {
-    // Remove any leading slash from the endpoint to prevent double slashes
+    // remove leading slashes if present
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
     const response = await fetch(`${BASE_URL}/${cleanEndpoint}`, {
       method: 'POST',
