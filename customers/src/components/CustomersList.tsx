@@ -8,6 +8,7 @@ import { ColDef, ICellRendererParams } from 'ag-grid-community';
 import { Button, Snackbar } from '@mui/material';
 import { AddCustomer } from './AddCustomer';
 import { EditCustomer } from './EditCustomer';
+import { AddTrainingForCustomer } from './AddTrainingForCustomer';
 
 export const CustomersList = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -75,11 +76,17 @@ export const CustomersList = () => {
       headerName: 'Actions',
       width: 120,
       cellRenderer: (params: ICellRendererParams) => (
-        <EditCustomer 
+        <div style={{ display: 'flex', gap: '5px' }}>
+          <EditCustomer 
+            customer={params.data} 
+            updateCustomer={updateCustomer} 
+            fetchCustomers={fetchCustomers} 
+          />
+          <AddTrainingForCustomer 
           customer={params.data} 
-          updateCustomer={updateCustomer} 
-          fetchCustomers={fetchCustomers} 
-        />
+          onTrainingAdded={() => showSnackbar('Training added successfully!')} 
+          />
+        </div>
       )
     },
     { 
