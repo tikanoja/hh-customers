@@ -1,7 +1,7 @@
 import { HttpMethod } from './types';
 
 export const API_CONFIG = {
-  BASE_URL: 'https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/',
+  BASE_URL: 'https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api',
   RESET: {
     URL: 'https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/reset',
     METHOD: 'POST' as HttpMethod,

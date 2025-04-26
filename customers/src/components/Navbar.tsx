@@ -14,7 +14,7 @@ export const Navbar = () => {
           <Button 
             color="inherit" 
             component={RouterLink} 
-            to="/customers"
+            to="customers"
             startIcon={<PeopleIcon />}
           >
             Customers

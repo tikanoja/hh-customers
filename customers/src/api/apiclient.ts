@@ -1,54 +1,54 @@
-import { HttpMethod } from './types';
-import { API_CONFIG } from './config';
+import { API_CONFIG } from "./config";
 
-interface RequestOptions {
-  method?: HttpMethod;
-  body?: any;
-  headers?: Record<string, string>;
-}
-
-const defaultHeaders = {
-  'Content-Type': 'application/json',
-};
+const BASE_URL = API_CONFIG.BASE_URL;
 
 export const apiClient = {
-  request<T = any>(endpoint: string, options: RequestOptions = {}) {
-    const { method = 'GET', body, headers } = options;
-    return fetch(`${API_CONFIG.BASE_URL}${endpoint}`, {
-      method,
+  get: async <T>(endpoint: string): Promise<T> => {
+    // Remove any leading slash from the endpoint to prevent double slashes
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+    const response = await fetch(`${BASE_URL}/${cleanEndpoint}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  },
+  
+  post: async <T>(endpoint: string, data: any): Promise<T> => {
+    // Remove any leading slash from the endpoint to prevent double slashes
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+    const response = await fetch(`${BASE_URL}/${cleanEndpoint}`, {
+      method: 'POST',
       headers: {
-        ...defaultHeaders,
-        ...headers,
+        'Content-Type': 'application/json',
       },
-      body: body ? JSON.stringify(body) : undefined,
-    }).then(response => {
-      if (!response.ok) {
-        return response.text().then(text => {
-          throw new Error(`API error ${response.status}: ${text}`);
-        });
-      }
-
-      if (response.status === 204) {
-        return {} as T;
-      }
-
-      return response.json();
+      body: JSON.stringify(data),
     });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
   },
-
-  get<T = any>(endpoint: string) {
-    return apiClient.request<T>(endpoint, { method: 'GET' });
+  
+  put: async <T>(url: string, data: any): Promise<T> => {
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
   },
-
-  post<T = any>(endpoint: string, body: any) {
-    return apiClient.request<T>(endpoint, { method: 'POST', body });
-  },
-
-  put<T = any>(endpoint: string, body: any) {
-    return apiClient.request<T>(endpoint, { method: 'PUT', body });
-  },
-
-  delete<T = any>(endpoint: string) {
-    return apiClient.request<T>(endpoint, { method: 'DELETE' });
+  
+  delete: async (url: string): Promise<void> => {
+    const response = await fetch(url, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
   },
 };

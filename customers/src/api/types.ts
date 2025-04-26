@@ -5,15 +5,18 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export interface Customer {
   firstname: string;
   lastname: string;
+  email: string;
+  phone: string;
   streetaddress: string;
   postcode: string;
   city: string;
-  email: string;
-  phone: string;
-  _links: {
-    self: { href: string };
-    customer: { href: string };
-    trainings: { href: string };
+  _links?: {
+    self: {
+      href: string;
+    };
+    [key: string]: {
+      href: string;
+    };
   };
 }
 
@@ -31,18 +34,17 @@ export interface Training {
 
 // training with Customer Info (from /gettrainings)
 export interface TrainingWithCustomer {
-  id: number;
+  id?: number;
   date: string;
   duration: number;
   activity: string;
-  customer: {
-    id: number;
-    firstname: string;
-    lastname: string;
-    streetaddress: string;
-    postcode: string;
-    city: string;
-    email: string;
-    phone: string;
+  customer: Customer;
+  _links?: {
+    self: {
+      href: string;
+    };
+    [key: string]: {
+      href: string;
+    };
   };
 }
