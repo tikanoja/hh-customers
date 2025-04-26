@@ -44,9 +44,17 @@ export const apiClient = {
   },
   
   delete: async (url: string): Promise<void> => {
-    const response = await fetch(url, {
+    // check if the URL is a full URL or a relative one and fix iws needed
+    const isFullUrl = url.startsWith('http://') || url.startsWith('https://');
+    const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
+    const fullUrl = isFullUrl ? url : `${BASE_URL}/${cleanUrl}`;
+    
+    console.log('Making DELETE request to:', fullUrl);
+    
+    const response = await fetch(fullUrl, {
       method: 'DELETE',
     });
+    
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
