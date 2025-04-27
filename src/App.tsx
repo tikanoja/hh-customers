@@ -18,7 +18,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <Router basename='/hh-customers'>
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw' }}>
           <Navbar />
           <Container 
