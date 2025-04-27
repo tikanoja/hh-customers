@@ -7,17 +7,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { Box, ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
 import '../calendar.css'; // custom styles for the calendar
-
-type CalendarEvent = {
-  id: string;
-  title: string;
-  start: string;
-  end?: string;
-  extendedProps: {
-    customer: string;
-    duration: number;
-  };
-};
+import { CalendarEvent } from '../api/types';
 
 export const CalendarView = () => {
   const [trainings, setTrainings] = useState<CalendarEvent[]>([]);

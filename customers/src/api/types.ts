@@ -55,3 +55,15 @@ export interface TrainingWithCustomer {
     };
   };
 }
+
+// events for FullCalendar
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  start: string;
+  end?: string;
+  extendedProps: {
+    customer: string;
+    duration: number;
+  };
+};
