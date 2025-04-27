@@ -67,16 +67,15 @@ export const CustomersList = () => {
 
   // export customers to CSV
   const exportToCSV = () => {
-    // Define which fields to include in the CSV
+    // the fields we want to include in the CSV
     const fields = ['firstname', 'lastname', 'email', 'phone', 'streetaddress', 'postcode', 'city'];
     
-    // Create CSV header
     let csvContent = fields.join(',') + '\n';
-    
-    // Add data rows
+
     customers.forEach(customer => {
       const row = fields.map(field => {
-        // Get the field value and wrap in quotes to handle commas in the data
+        // get the field value and wrap it in quotes
+        // if the value is null or undefined, use an empty string
         const value = customer[field as keyof typeof customer] || '';
         return `"${value}"`;
       });
@@ -84,7 +83,7 @@ export const CustomersList = () => {
       csvContent += row.join(',') + '\n';
     });
     
-    // Create a blob and download the file
+    // create a 'blob' object and a link to download the CSV file
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
