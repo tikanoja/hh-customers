@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColDef, ICellRendererParams } from 'ag-grid-community';
-import { Button, Snackbar } from '@mui/material';
+import { Button, Snackbar, Box } from '@mui/material';
 import { AddCustomer } from './AddCustomer';
 import { EditCustomer } from './EditCustomer';
 import { AddTrainingForCustomer } from './AddTrainingForCustomer';
@@ -64,6 +64,39 @@ export const CustomersList = () => {
     setSnackbarOpen(true);
   };
 
+  // export customers to CSV
+  const exportToCSV = () => {
+    // Define which fields to include in the CSV
+    const fields = ['firstname', 'lastname', 'email', 'phone', 'streetaddress', 'postcode', 'city'];
+    
+    // Create CSV header
+    let csvContent = fields.join(',') + '\n';
+    
+    // Add data rows
+    customers.forEach(customer => {
+      const row = fields.map(field => {
+        // Get the field value and wrap in quotes to handle commas in the data
+        const value = customer[field as keyof typeof customer] || '';
+        return `"${value}"`;
+      });
+      
+      csvContent += row.join(',') + '\n';
+    });
+    
+    // Create a blob and download the file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'customers.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showSnackbar('Customers exported successfully!');
+  };
+
   const columnDefs: ColDef[] = [
     { field: 'firstname', headerName: 'First Name', sortable: true, filter: true },
     { field: 'lastname', headerName: 'Last Name', sortable: true, filter: true },
@@ -108,37 +141,47 @@ export const CustomersList = () => {
     }
   ];
 
-  return (
-    <div style={{ height: '100%', width: '100%', padding: '20px' }}>
-      <h1>Customers</h1>
-      
+return (
+  <div style={{ height: '100%', width: '100%', padding: '20px' }}>
+    <h1>Customers</h1>
+    
+    <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
       <AddCustomer saveCustomer={saveCustomer} />
-      
-      <div 
-        className="ag-theme-alpine" 
-        style={{ height: 'calc(100vh - 180px)', width: '100%', marginTop: '20px' }}
+      <Button 
+        variant="contained"
+        color="primary"
+        onClick={exportToCSV}
+        style={{ marginBottom: 20 }}
       >
-        <AgGridReact
-          rowData={customers}
-          columnDefs={columnDefs}
-          pagination={true}
-          paginationPageSize={10}
-          paginationPageSizeSelector={[10, 20, 50, 100]}
-          animateRows={true}
-          defaultColDef={{
-            flex: 1,
-            minWidth: 100,
-            resizable: true
-          }}
-        />
-      </div>
-      
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
-        message={snackbarMessage}
+        Export to CSV
+      </Button>
+    </Box>
+    
+    <div 
+      className="ag-theme-alpine" 
+      style={{ height: 'calc(100vh - 180px)', width: '100%', marginTop: '20px' }}
+    >
+      <AgGridReact
+        rowData={customers}
+        columnDefs={columnDefs}
+        pagination={true}
+        paginationPageSize={10}
+        paginationPageSizeSelector={[10, 20, 50, 100]}
+        animateRows={true}
+        defaultColDef={{
+          flex: 1,
+          minWidth: 100,
+          resizable: true
+        }}
       />
     </div>
-  );
+    
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={3000}
+      onClose={() => setSnackbarOpen(false)}
+      message={snackbarMessage}
+    />
+  </div>
+);
 };

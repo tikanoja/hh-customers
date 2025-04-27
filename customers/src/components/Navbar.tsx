@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import PeopleIcon from '@mui/icons-material/People';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export const Navbar = () => {
   return (
@@ -14,7 +15,7 @@ export const Navbar = () => {
           <Button 
             color="inherit" 
             component={RouterLink} 
-            to="customers"
+            to="/customers"
             startIcon={<PeopleIcon />}
           >
             Customers
@@ -26,6 +27,14 @@ export const Navbar = () => {
             startIcon={<FitnessCenterIcon />}
           >
             Trainings
+          </Button>
+          <Button 
+            color="inherit" 
+            component={RouterLink} 
+            to="/calendar"
+            startIcon={<CalendarMonthIcon />}
+          >
+            Calendar
           </Button>
         </Box>
       </Toolbar>

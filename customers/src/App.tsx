@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme, CssBaseline, Container, Box } from '@mui/ma
 import { Navbar } from './components/Navbar';
 import { CustomersList } from './components/CustomersList';
 import { TrainingsList } from './components/TrainingsList';
+import { CalendarView } from './components/CalendarView';
 
 function App() {
   const theme = createTheme({
@@ -34,6 +35,7 @@ function App() {
               <Route path="/" element={<Navigate to="/customers" />} />
               <Route path="/customers" element={<CustomersList />} />
               <Route path="/trainings" element={<TrainingsList />} />
+              <Route path="/calendar" element={<CalendarView />} />
             </Routes>
           </Container>
         </Box>

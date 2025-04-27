@@ -22,13 +22,20 @@ export interface Customer {
 
 // training Type
 export interface Training {
+  id?: number;
   date: string;
-  duration: number; // in minutes
   activity: string;
-  _links: {
-    self: { href: string };
-    training: { href: string };
-    customer: { href: string };
+  duration: number;
+  _links?: {
+    self: {
+      href: string;
+    };
+    training: {
+      href: string;
+    };
+    customer: {
+      href: string;
+    };
   };
 }
 

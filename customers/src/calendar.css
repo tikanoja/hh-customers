@@ -1,0 +1,18 @@
+/* Style for all event types */
+.training-event {
+    background-color: #3788d8 !important;
+    border-color: #2c6aa0 !important;
+    color: white !important;
+  }
+  
+  /* Make sure events in month view are properly visible */
+  .fc-daygrid-dot-event .training-event-content {
+    color: white !important;
+    padding: 2px;
+  }
+  
+  /* For dot events in month view */
+  .fc-daygrid-dot-event {
+    background-color: #3788d8 !important;
+    border-color: #2c6aa0 !important;
+  }
