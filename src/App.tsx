@@ -33,6 +33,7 @@ function App() {
           >
             <Routes>
               <Route path="/" element={<Navigate to="/customers" />} />
+              <Route path="/hh-customers" element={<Navigate to="/customers" />} />
               <Route path="/customers" element={<CustomersList />} />
               <Route path="/trainings" element={<TrainingsList />} />
               <Route path="/calendar" element={<CalendarView />} />
