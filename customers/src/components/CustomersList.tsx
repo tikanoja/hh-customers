@@ -9,6 +9,7 @@ import { Button, Snackbar, Box } from '@mui/material';
 import { AddCustomer } from './AddCustomer';
 import { EditCustomer } from './EditCustomer';
 import { AddTrainingForCustomer } from './AddTrainingForCustomer';
+import { CustomerStats } from './CustomerStats';
 
 export const CustomersList = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -105,6 +106,13 @@ export const CustomersList = () => {
     { field: 'streetaddress', headerName: 'Address', sortable: true, filter: true },
     { field: 'postcode', headerName: 'Postcode', sortable: true, filter: true },
     { field: 'city', headerName: 'City', sortable: true, filter: true },
+    { 
+      headerName: 'Stats',
+      width: 90,
+      cellRenderer: (params: ICellRendererParams) => (
+        <CustomerStats customer={params.data} />
+      )
+    },
     { 
       headerName: 'Edit',
       width: 90,
